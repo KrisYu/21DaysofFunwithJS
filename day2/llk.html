@@ -10,6 +10,13 @@
 	h1{
 		text-align: center;
 	}
+	#gameboard{
+		margin: auto auto auto auto;
+		width: 832px;
+	}
+	font{
+		font-family: helvetica;
+	}
 </style>
 
 <body>
@@ -21,8 +28,8 @@
 
 	<script type="text/javascript">
 		var row,col;
-		row = 10;
-		col = 10;
+		row = 12;
+		col = 12;
 		var container = new Array(); 
 		var isSelect = false;
 		pics = ["imgs/1.png", "imgs/2.png", "imgs/3.png","imgs/4.png","imgs/5.png","imgs/6.png","imgs/7.png","imgs/8.png","imgs/9.png","imgs/10.png"];
@@ -78,8 +85,9 @@
 				for (var j = 0; j < col; j++) {
 					// expand spaces
 					if(i<=0||i>=row-1||j<=0||j>=col-1){
-						html+="<td>"
+						html+="<td><img src='imgs/blank.png'>"
 						box[i][j]=0;
+
 					}else{
 						box[i][j] = imageShows[n];
 						html += "<td><img onclick='trigger(event,"+i+","+j+")' src="+imageShows[n]+">"
