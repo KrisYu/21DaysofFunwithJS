@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF8">
+	<title>百合大法好</title>
+</head>
+
+<style type="text/css">
+	h1{
+		text-align: center;
+	}
+</style>
+
+<body>
+	<h1>百合大法好</h1>
+	<div id="gameboard">
+	</div>
+
+
+
+	<script type="text/javascript">
+		var row,col;
+		row = 10;
+		col = 10;
+		var container = new Array(); 
+		var isSelect = false;
+		pics = ["imgs/1.png", "imgs/2.png", "imgs/3.png","imgs/4.png","imgs/5.png","imgs/6.png","imgs/7.png","imgs/8.png","imgs/9.png","imgs/10.png"];
+
+		// 0 store locs, 1 store the element itself
+		for (var i = 0; i < 2; i++) {
+			container[i] = new Array();
+		}
+
+		function trigger(e, x, y) {
+			var ele = e.target;
+			if (!box[x][y] || ele == container[1][0]) {
+				return 0;
+			}
+			if (isSelect) {
+				container[0].push({"x":x, "y":y});
+				container[1].push(ele);
+				match();
+			}else{
+				isSelect = true;
+				container[0].push({"x":x, "y":y});
+				container[1].push(ele);
+				ele.style.cssText="border:3px solid green;animation:mymove 0.3s infinite; "; 
+			}
+		}
+
+
+
+		function setTable(){
+			box = new Array();
+			for (var i = 0; i < row; i++) {
+				box[i] = new Array();
+			}
+
+			var imageShows = new Array();
+			var nums = row * col / 2;
+
+			console.log(nums)
+			for (var i = 0, t = 0 , n = 0 ; i < nums; n++, i++, t+=2) {
+				if (n >= pics.length){
+					n = 0;
+				}
+				imageShows.push(pics[n]);
+				imageShows.push(pics[n]);
+			}
+			
+			shuffle(imageShows);
+			
+			var n = 0;
+			var html = "<table><div></div>";
+			for (var i = 0; i < row; i++) {
+				html += "<tr>";
+				for (var j = 0; j < col; j++) {
+					// expand spaces
+					if(i<=0||i>=row-1||j<=0||j>=col-1){
+						html+="<td>"
+						box[i][j]=0;
+					}else{
+						box[i][j] = imageShows[n];
+						html += "<td><img onclick='trigger(event,"+i+","+j+")' src="+imageShows[n]+">"
+						n++;
+					}
+					html+="</td>";
+				}
+			}
+			html += "</tr>";
+			html +="<table>";
+			document.getElementById("gameboard").innerHTML = html;
+		}
+
+		function shuffle(a) {
+		    for (let i = a.length; i; i--) {
+		        let j = Math.floor(Math.random() * i);
+		        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+		    }
+		}
+
+		function match(){
+			console.log('hi');
+			if (check()) {
+
+				isSelect = false;
+				img1 = container[1][0];
+				img2 = container[1][1];
+				img1.style.cssText = "border:none;"
+				img1.setAttribute("src","imgs/blank.png");
+				img2.style.cssText = "border:none;"
+				img2.setAttribute("src","imgs/blank.png");
+				setTimeout(function(){img1.style.cssText="animation:none;display:none"},300);
+				setTimeout(function(){img2.style.cssText="animation:none;display:none"},300);
+				for(var i =0,length=container[0].length;i<length;i++){
+					box[container[0][0].x][container[0][0].y]=0;
+					container[1].shift();
+					container[0].shift();
+				}
+			}else{
+				// move css style to the second one
+				container[1][0].style.cssText="border:none;animation:none;";
+				container[0].shift();
+				container[1].shift();
+				container[1][0].style.cssText="border:3px solid green;animation:mymove 0.3s infinite;";
+			}
+		}
+
+		function check() {
+			var A = container[0][0];
+			var B = container[0][1];
+			
+
+
+			if (box[A.x][A.y] != box[B.x][B.y]) { 
+				return false;
+			}
+
+			return CheckLink(A,B);
+
+
+		}
+
+
+		function CheckX(xStart, yStart, xEnd){
+			for (var i = xStart; i != xEnd; (i<xEnd ? i++ : i--))
+			{
+				if (box[i][yStart] != " ")
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		function CheckY(yStart, xStart, yEnd){
+			for (var i = yStart; i != yEnd; (i<yEnd ? i++ : i--))
+			{
+				if (box[xStart][i] != " ")
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+
+		function CheckLink(A, B){
+			if (A.y > B.y) //将P1作为基准，存储纵坐标较小的那个位置。则P2可能位于P1的正下、正左、正右、左下或者右下位置。
+			{				
+				var temp = A;
+				A = B;
+				B = temp;
+			}	
+			if (CheckY(A.y+1, A.x, B.y) && CheckX(A.x, B.y, B.x))//调用方法检查直接相连或者两条线相连的可能路径（横、竖、横竖）
+			{
+				return true;
+			}
+			for (var i = A.x-1; i >= 0; i--) //从P1先往左侧走，再往垂直方向，再水平方向检查三条线路径（横竖横）
+			{
+				if (box[i][A.y] != 0)
+				{
+					break;
+				}
+				if (CheckY(A.y+1, i, B.y) && CheckX(i, B.y, B.x))
+				{
+					return true;
+				}
+			}
+			for (i = A.x+1; i < row; i++)//从P1先往右侧走，再往垂直方向，再水平方向检查三条线路径（横竖横）
+			{
+				if (box[i][A.y] != 0)
+				{
+					break;
+				}
+				if (CheckY(A.y+1, i, B.y) && CheckX(i, B.y, B.x))
+				{
+					return true;
+				}
+			}
+			if (A.x > B.x)//将P1作为基准，存储横坐标较小的那个位置
+			{
+				temp = A;
+				A = B;
+				B = temp;
+			}
+			if (CheckX(A.x+1, A.y, B.x) && CheckY(A.y, B.x, B.y))//检查一条线、两条线可能路径（横、竖、竖横）
+			{
+				return true;
+			}
+			for (i = A.y-1; i >= 0; i--)//从P1先往上走，再水平方向、垂直方向检查竖横竖路径（竖横竖）
+			{
+				if (box[A.x][i] != 0)
+				{
+					break;
+				}
+				if (CheckX(A.x+1, i, B.x) && CheckY(i, B.x, B.y))
+				{
+					return true;
+				}
+			}
+			for (i = A.y+1; i < col; i++)//从P1先往下走，再水平方向、垂直方向检查竖横竖可能路径（竖横竖）
+			{
+				if (box[A.x][i] != 0)
+				{
+					break;
+				}
+				if (CheckX(A.x+1, i, B.x) && CheckY(i, B.x, B.y))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+
+		setTable();
+
+
+
+	</script>
+
+
+
+</body>
+
+</html>
