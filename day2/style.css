@@ -1,0 +1,235 @@
+	.col-span-1,.col-span-10,.col-span-11,.col-span-12,.col-span-2,.col-span-3,.col-span-4,.col-span-5,.col-span-6,.col-span-7,.col-span-8,.col-span-9 {
+        float:left
+    }
+
+    .col-span-12 {
+        width: 100%
+    }
+
+    .col-span-11 {
+        width: 91.66666667%
+    }
+
+    .col-span-10 {
+        width: 83.33333333%
+    }
+
+    .col-span-9 {
+        width: 75%
+    }
+
+    .col-span-8 {
+        width: 66.66666667%
+    }
+
+    .col-span-7 {
+        width: 58.33333333%
+    }
+
+    .col-span-6 {
+        width: 50%
+    }
+
+    .col-span-5 {
+        width: 41.66666667%
+    }
+
+    .col-span-4 {
+        width: 33.33333333%
+    }
+
+    .col-span-3 {
+        width: 25%
+    }
+
+    .col-span-2 {
+        width: 16.66666667%
+    }
+
+    .col-span-1 {
+        width: 8.33333333%
+    }
+	 html,body{
+		width:100%;
+		height:100%;
+		margin:0px;
+	 }
+	 body{
+		    background-image: url(../images/bg.jpg);
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+	 }
+   .main{
+	text-align:center;
+   }
+   .main h1{
+	   font-family: "微软雅黑";
+		color: #EE3D33;
+		margin: 0px;
+		padding: 20px;
+		letter-spacing: 10px;
+		text-shadow: 5px 5px 5px #6F5B5B;
+   }
+	td{
+		width:38px;
+		height:38px;
+		float:left;
+	}
+	table{
+		border: 4px solid #6B8C59;
+		padding:0px;
+		margin:auto;
+		
+		background-size: contain;
+		border-collapse:collapse;
+	}
+	@keyframes mymove
+	{
+		0% {transform:rotate(-2deg);}
+		25% {transform:rotate(0deg);}
+		50% {transform:rotate(2deg);}
+		75% {transform:rotate(0deg);}
+		100% {transform:rotate(-2deg);}
+	}
+
+	@-webkit-keyframes mymove 
+	{
+		0% {transform:rotate(-2deg);}
+		25% {transform:rotate(0deg);}
+		50% {transform:rotate(2deg);}
+		75% {transform:rotate(0deg);}
+		100% {transform:rotate(-2deg);}
+	}
+	.box{
+		display:inline-block;
+		position:relative;
+		margin-top: 20px;
+	}
+	.bg{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		z-index: -1;
+		background-image: url(../images/tbbg.jpg);
+		background-size: 100%;
+		opacity: 0.85;
+	}
+	.bar{
+		font-family:"微软雅黑";
+		width:70%;
+		margin:auto;
+	}
+	.life-bar{
+		height: 20px;
+		border-radius: 20px;
+		overflow: hidden;
+	}
+	.life-name{
+		color: #0CA627;
+		color: #900CA6;
+		font-size: 18px;
+		line-height: 18px;
+		font-weight: 600;
+		text-align:right;
+	}
+	.clearfix:after{
+		content:"";
+		display:block;
+		clear:both;
+	}
+	.life{
+		float:left;
+		height:50px;
+	}
+	.life-res{
+		width:100%;
+		background-color:red;
+	}
+	.life-used{
+		width:0%;
+		background-color:#ccc;
+	}
+	.level{
+		position:relative;
+	}
+	.level button{
+	   padding: 5px 15px 3px 15px;
+		font-size: 15px;
+		line-height: 15px;
+		border: none;
+		background-color: #179094;
+		color: #fff;
+		border-radius: 20px;
+		cursor: pointer;
+		outline: none;
+	}
+	.level ul{
+		list-style:none;
+		transition:all 1s;
+		padding:0px;;
+		width: 70%;
+		margin: 10px auto;
+		background-color: #62A970;
+		height:0px;
+		overflow:hidden;
+		position:absolute;
+		left:0px;
+		right:0px;
+	}
+	.level ul li{
+		cursor:pointer;
+		cursor: pointer;
+		margin: auto;
+		color: #E8E8E8;
+		padding: 10px;
+		border-bottom: 1px solid #ddd;
+	}
+	.level ul li:hover{
+			background-color: #4678A4;
+	}
+	.mask{
+		transition:all 1s;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(17, 17, 17, 0.86);
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		z-index: 99;
+	}
+	.wel{
+		transition:all 1s;
+		position: absolute;
+		height: 200px;
+		width: 300px;
+		background-color: aliceblue;
+		left: 0px;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+		margin: auto;
+		z-index:999;
+		font-family: "微软雅黑";
+	}
+	.wel h2{
+		margin: 0px;
+		padding: 10px;
+		background-color: #CFA0A0;
+		font-family: "微软雅黑";
+		color: #21409E;
+	}
+	.wel .fruits-type{
+		padding: 15px;
+		color: #F04242;
+	}
+	.wel button{
+		outline: none;
+		border: 1px solid #ccc;
+		padding: 5px 10px;
+		margin: 15px;
+		background-color: #3ABF43;
+		cursor: pointer;
+		font-family: "微软雅黑";
+		color: #fff;
+	} 

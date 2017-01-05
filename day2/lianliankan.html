@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="style.css"/>
+		<title>水果连连看</title>
+	</head>
+<body>
+<div class="main">
+	<h1>水果连连看</h1>
+	<div class="bar clearfix">
+		<div class="col-span-2 life-name">生命值&nbsp;</div>
+		<div class="life-bar col-span-8">
+			<div class="life-res life" ></div>
+			<div class="life-used life"></div>
+		</div>
+		<div class="level col-span-2">
+			<button>等级</button>
+			<ul>
+				<li data-level="0">津津有味</li>
+				<li data-level="1">甘甜适口</li>
+				<li data-level="2">肥嫩硕大</li>
+				<li data-level="3">硕果满园</li>
+				<li data-level="4">香果连连</li>
+			</ul>
+		</div>
+		
+	</div>
+	<div class="box">
+		<div class ="bg"></div>
+		<div class="game"></div>
+	</div>
+	<div class="wel">
+		<h2>果连连</h2>
+		<div class="content">
+			<div class="fruits-type">
+				第1关：津津有味
+			</div>
+			<div class="intro">
+				~尽情的品尝吧~
+			</div>
+			<button>出发</button>
+		</div>
+	</div>
+	<div class="mask">
+	
+	</div>
+	
+</div>
+<script src="core.js"></script>
+<script>
+	var info={//基本的信息
+		name:["津津有味","甘甜适口","嫩肥硕大","硕果满园","香果连连"],//关卡名
+		intro:["~尽情的品尝吧~","~哇塞,好厉害耶！","有种就再过一关","满林子的果园在等着你哦","什么~~果子都快被猴子偷吃关了","想要增加难度?欢迎访问<a href='http:www.imwangfu.com'>杰森先生</a>的博客，联系作者哦","不要灰心再接再厉"],
+		row:[6,8,10,12,15],//行数
+		col:[6,8,10,12,14],//列数
+		type:[6,8,15,20,24],//水果种类
+		times:[25,60,120,180,250]//游戏时间单位为秒
+	}
+	function setDropActive(){//设置下拉菜单
+		var c = 0;
+		function dropShow(){
+			if(c==0){
+				document.querySelector(".level ul").style.height="205px";
+				c=1;
+			}else{
+				document.querySelector(".level ul").style.height="0px";
+				c=0;
+			}
+		}
+		function dropHide(){
+			document.querySelector(".level ul").style.height="0px";
+			c=0;
+		}
+		return {
+			show:function(){
+				dropShow()
+			},
+			hide:function(){
+				dropHide()
+			}
+		}
+	}
+	var drop = setDropActive()
+	document.querySelector(".level button").onclick=drop.show;
+	document.querySelector(".level button").onblur =drop.hide;
+	document.querySelector(".wel button").onclick=init;
+	function init(){//初始化
+		var pass = showBg(0,"none",rank);//现实提示界面
+		if(pass==0){//如果完全通过，则不再继续游戏
+			return ;
+		}
+		counter.start(0,info.times[rank]);//计时
+		setTable(info.row[rank],info.col[rank],info.type[rank]);//建立游戏表盘
+		fruits=0;//已经消失的水果数量
+	}
+	function showBg(x,y,n,res){
+		var t = Number(n)+1;
+		if(n>=5){//最后一关结束
+			document.querySelector(".wel button").style.display="none";
+			document.querySelector(".fruits-type").innerHTML="恭喜你，没有关卡啦";
+			changeText(info.intro[n]);
+			return 0;
+		}
+		document.querySelector(".fruits-type").innerHTML="第"+t+"关："+info.name[n];
+		if(typeof(res)!="undefined"&&res==0){
+			document.querySelector(".intro").innerHTML=info.intro[6];
+		}else{
+		  changeText(info.intro[n])
+		}
+		var mask =  document.querySelector(".mask").style;
+		var wel =  document.querySelector(".wel").style;
+		if(x==1){//设置渐渐显示和消失
+			mask.display=y;
+			wel.display=y;
+			setTimeout(function(){
+				mask.opacity=x;
+				wel.opacity=x;
+			},1000)
+		}else{
+			mask.opacity=x;
+			wel.opacity=x;
+			setTimeout(function(){
+				mask.display=y;
+				wel.display=y;
+			},1000)
+		}
+		
+	}
+	function changeText(ctn){//提示语改变
+		document.querySelector(".intro").innerHTML=ctn;
+	}
+	//选择难度
+	document.querySelector(".level ul").onclick=function(e){
+		var ele = e.target;
+		rank = ele.getAttribute("data-level");
+		counter.stop()
+		init();
+	}
+</script>
+</body>	
+</html>

@@ -125,49 +125,30 @@
 		}
 
         function updateNextState() {
-            var i, j;
+        	var i, j ,lives;
+
             for(i = 0; i < height; i++){
                 for(j = 0; j < width; j++){
-                    var curr = board[i][j];
-                    var neighbors = countNeighbors(i, j);
-                    if(neighbors < 2 || neighbors > 3){
-                        if(curr === 1){
-                            board[i][j] = 3;
-                        }
-                    }else if(neighbors === 3){
-                        if(curr === 0){
-                            board[i][j] = 2;
-                        }
-                    }
-                }
-            }
-            for(i = 0; i < height; i++){
-                for(j = 0; j < width; j++){
-                    if(board[i][j] === 2){
-                        board[i][j] = 1;
-                    }else if(board[i][j] === 3){
-                        board[i][j] = 0;
-                    }
+	                	lives = 0;
+	                	for (x = Math.max(i - 1, 0); x <= Math.min(i + 1, height - 1); x++) {
+	                        for (y = Math.max(j - 1, 0); y <= Math.min(j + 1, width - 1); y++) {
+	                            lives += (board[x][y] & 1);
+	                        }
+	                    }
+	                    
+	                    // only care the ones that'll be live
+	                    if (lives === 3 || lives - board[i][j] === 3) {
+	                        board[i][j] |= 2;
+	                    }
+	                }
+	            }
+            
+            for (i = 0; i < height; i++) {
+                for (j = 0; j < width; j++) {
+                    board[i][j] >>= 1;
                 }
             }
 
-            function countNeighbors(i, j){
-                var count = 0;
-                count += isAlive(i, j - 1); count += isAlive(i, j + 1);
-                count += isAlive(i - 1, j - 1); count += isAlive(i - 1, j); count += isAlive(i - 1, j + 1);
-                count += isAlive(i + 1, j - 1); count += isAlive(i + 1, j); count += isAlive(i + 1, j + 1);
-                return count;
-            }
-            function isAlive(i, j){
-                if(!board[i] || !board[i][j]){
-                    return 0;
-                }
-                var cell = board[i][j];
-                if(cell === 1 || cell === 3){
-                    return 1;
-                }
-                return 0;
-            }
         }
 
 
