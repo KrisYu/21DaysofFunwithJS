@@ -8,6 +8,9 @@ window.onload = function() {
 
 
   var textEditor = document.getElementById('editor');
+  var resultDiv = document.getElementsByClassName('md_result')[0];
+  var text = textEditor.value;
+  resultDiv.innerHTML = parse(text);
 
   textEditor.addEventListener('input', function(){
     var resultDiv = document.getElementsByClassName('md_result')[0];
@@ -169,15 +172,15 @@ window.onload = function() {
 
   /**
   功能：根据输入字符串确定命令类型
-  参数：t		输入字符串
+  参数：t    输入字符串
   返回：命令
-  h1 h2 h3 h4 h5 h6		标题
-  quote					引用
-  program					代码
-  p						文本
-  hr						分隔线
-  ul						无序列表
-  ol						有序列表
+  h1 h2 h3 h4 h5 h6   标题
+  quote         引用
+  program         代码
+  p           文本
+  hr            分隔线
+  ul            无序列表
+  ol            有序列表
   */
   function getcmd(s){
     temp=s.split(' ');
