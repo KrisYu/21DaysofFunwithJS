@@ -19,4 +19,4 @@ JS and Python are so powerful and expressive language.
 [x] Day 4 [Markdown Editor](https://krisyu.github.io/21DaysofFunwithJS/day4/index.html)
 
 
-[x] Day 5  [Clock](https://krisyu.github.io/21DaysofFunwithJS/day5/clock.html) | [Notes](https://krisyu.github.io/21DaysofFunwithJS/day5/时钟)
+[x] Day 5  [Clock](https://krisyu.github.io/21DaysofFunwithJS/day5/clock.html) | [Notes](https://krisyu.github.io/21DaysofFunwithJS/day5/钟表)
