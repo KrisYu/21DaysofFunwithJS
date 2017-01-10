@@ -4,22 +4,29 @@
 // 1: Paused
 // 2: Running a pomodoro cycle
 // 3: Running a break cycle
+// 4: Running a long break
 
-var Pomodoro = function(pomodoroTime, breakTime, displayElementId, messageDisplayId){
+var Pomodoro = function(pomodoroTime, breakTime, longBreakTime, longBreakCnt, displayElementId, messageDisplayId, countsDisplayId){
   this.cycle = pomodoroTime * 60 ;
   this.break = breakTime * 60; // minutes
+  this.longBreak = longBreakTime * 60;
+  this.longBreakCnt = longBreakCnt;
   this.state = 0 ; // Initial state.
   this.lastState = 2; //
   this.timeLeft = pomodoroTime * 60;
   this.timerDisplay = displayElementId;
   this.messageDisplayId = messageDisplayId;
+  this.countsDisplayId = countsDisplayId;
+  this.pomodoroCnt = 0; // how many pomodoro passed
+
+  document.getElementById(this.timerDisplay).innerHTML = pomodoroTime + ':00';
 }
 
 
 Pomodoro.prototype.start = function(){
   var self = this;
   if (this.state == 0 || this.state == 1) {
-    this.newState(this.lastState == 2 ? 2 : 3);
+    this.newState(this.lastState);
     tick();
     this.timer = setInterval(function(){
       tick();
@@ -30,8 +37,23 @@ Pomodoro.prototype.start = function(){
     self.timeLeft = self.timeLeft - 1;
     self.updateDisplay(self.timeLeft);
     if (self.timeLeft == 0) {
-      self.timeLeft = self.state === 2 ? self.break : self.cycle;
-      self.newState(self.state === 2 ? 3 : 2);
+      // entering next state
+      if (self.state == 2) {
+        self.pomodoroCnt++;
+        // used to display
+        document.getElementById(self.countsDisplayId).innerHTML = self.pomodoroCnt + ' / 10';
+        if (self.pomodoroCnt % self.longBreakCnt == 0 ) {
+          self.timeLeft = self.longBreak;
+          self.state = 4;
+        } else {
+          self.timeLeft = self.break;
+          self.state = 3;
+        }
+      } else {
+        self.timeLeft = self.cycle;
+        self.state = 2;
+      }
+      self.newState(self.state);
       console.log('cycle ended');
       var audio = new Audio('beepbeep.mp3');
       audio.play();
@@ -42,7 +64,7 @@ Pomodoro.prototype.start = function(){
 
 
 Pomodoro.prototype.pause = function(){
-  if (this.state == 2 || this.state == 3) {
+  if (this.state == 2 || this.state == 3 || this.state == 4) {
     this.newState(1);
     clearInterval(this.timer);
   }
@@ -100,6 +122,11 @@ Pomodoro.prototype.newState = function(state){
       message = 'STAND UP!';
       document.getElementById(this.timerDisplay).style.color = '#53C56C';
       break;
+    case 4:
+      console.log('New state set: Long Break Cycle');
+      message = 'WALK AROUND!';
+      document.getElementById(this.timerDisplay).style.color = '#53C56C';
+      break;
   }
   this.updateDisplay(this.timeLeft, message);
 }
@@ -109,7 +136,7 @@ var elStart = document.getElementById('start');
     elPause = document.getElementById('pause');
     elReset = document.getElementById('reset');
 
-var myPomodoro = new Pomodoro(0.2, 0.1, 'timer', 'messageDisplayId');
+var myPomodoro = new Pomodoro(25, 5, 15, 4, 'timer', 'messageDisplayId', 'counts');
 
 elStart.addEventListener('click',function(){
   myPomodoro.start();
