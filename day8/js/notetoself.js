@@ -1,6 +1,10 @@
 window.onload = init;
 
 function init(){
+
+  // templateStickers();
+
+
   var button = document.getElementById('add_button');
   button.onclick = createSticky;
 
@@ -14,7 +18,6 @@ function init(){
 
   });
 
-  templateStickers();
   var stickiesArray = getstickiesArray();
 
   for (var i = 0; i < stickiesArray.length; i++) {
@@ -122,7 +125,7 @@ function templateStickers(){
   sticky_2_val = {"value":"这是一个应用localStorage的例子","color":"LightPink"};
 
   sticky_3_key = 'sticky_3';
-  sticky_3_val = {"value":"重启我也在哦👍","color":"LightBlue"};
+  sticky_3_val = {"value":"重启我也在哦","color":"LightBlue"};
 
   stickiesArray = [sticky_0_key,sticky_1_key,sticky_2_key,sticky_3_key];
   localStorage.setItem('stickiesArray',JSON.stringify(stickiesArray));
