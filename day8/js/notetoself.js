@@ -10,10 +10,10 @@ function init(){
 
   var input = document.getElementById('note_text');
   input.addEventListener('keypress',function(e){
-    e.preventDefault();
     if (e.keyCode == 13){
       button.click();
       input.value = '';
+      e.preventDefault();
     }
 
   });
@@ -31,7 +31,33 @@ function getstickiesArray(){
   var stickiesArray = localStorage['stickiesArray'];
   if (!stickiesArray) {
     stickiesArray = [];
-    localStorage.setItem('stickiesArray', JSON.stringify(stickiesArray));
+
+    // these work as templates, will init as instructions
+    function templateStickers(){
+
+      sticky_0_key = 'sticky_0';
+      sticky_0_val = {"value":"选取颜色来添加对应的sticker","color":"LightGoldenRodYellow"}
+
+      sticky_1_key = 'sticky_1';
+      sticky_1_val = {"value":"如果完成可以点击sticker来删除","color":"PaleGreen"};
+
+      sticky_2_key = 'sticky_2';
+      sticky_2_val = {"value":"这是一个应用localStorage的例子","color":"LightPink"};
+
+      sticky_3_key = 'sticky_3';
+      sticky_3_val = {"value":"重启我也在哦","color":"LightBlue"};
+
+      stickiesArray = [sticky_0_key,sticky_1_key,sticky_2_key,sticky_3_key];
+      localStorage.setItem('stickiesArray',JSON.stringify(stickiesArray));
+
+
+      localStorage.setItem(sticky_0_key,JSON.stringify(sticky_0_val));
+      localStorage.setItem(sticky_1_key,JSON.stringify(sticky_1_val));
+      localStorage.setItem(sticky_2_key,JSON.stringify(sticky_2_val));
+      localStorage.setItem(sticky_3_key,JSON.stringify(sticky_3_val));
+    }
+
+    templateStickers();
   } else {
     stickiesArray = JSON.parse(stickiesArray)
   }
@@ -109,30 +135,4 @@ function deleteSticky(e){
 function removeStickyFromDOM(key){
   var sticky = document.getElementById(key);
   sticky.parentNode.removeChild(sticky);
-}
-
-// these work as templates, will init as instructions
-function templateStickers(){
-  var stickiesArray = getstickiesArray();
-
-  sticky_0_key = 'sticky_0';
-  sticky_0_val = {"value":"选取颜色来添加对应的sticker","color":"LightGoldenRodYellow"}
-
-  sticky_1_key = 'sticky_1';
-  sticky_1_val = {"value":"如果完成可以点击sticker来删除","color":"PaleGreen"};
-
-  sticky_2_key = 'sticky_2';
-  sticky_2_val = {"value":"这是一个应用localStorage的例子","color":"LightPink"};
-
-  sticky_3_key = 'sticky_3';
-  sticky_3_val = {"value":"重启我也在哦","color":"LightBlue"};
-
-  stickiesArray = [sticky_0_key,sticky_1_key,sticky_2_key,sticky_3_key];
-  localStorage.setItem('stickiesArray',JSON.stringify(stickiesArray));
-
-
-  localStorage.setItem(sticky_0_key,JSON.stringify(sticky_0_val));
-  localStorage.setItem(sticky_1_key,JSON.stringify(sticky_1_val));
-  localStorage.setItem(sticky_2_key,JSON.stringify(sticky_2_val));
-  localStorage.setItem(sticky_3_key,JSON.stringify(sticky_3_val));
 }
